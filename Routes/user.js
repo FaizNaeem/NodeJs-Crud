@@ -1,5 +1,5 @@
 const model = require("../model/userSchema")
-
+const bcrypt = require("bcrypt")
 const router = require("express").Router()
 
 
@@ -31,6 +31,10 @@ router.delete("/:id", async (req, res) => {
 
 })
 router.post("/", async (req, res) => {
+    const saltRounds = 10
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+    req.body.password = hash
     const USer = await model.create({ ...req.body })
     res.send({
         status: 200,
@@ -38,6 +42,46 @@ router.post("/", async (req, res) => {
     })
 
 
+})
+
+router.post("/Login", async (req, res) => {
+    const { email, password } = req.body
+    try {
+
+        const USer = await model.findOne({ email: email })
+        if (USer) {
+            const ps = bcrypt.compareSync(password, USer.password);
+            if (ps) {
+                USer.password = undefined
+                return res.send({
+                    status: 200,
+                    message: "User Login",
+                    User: USer
+                })
+            }
+            else {
+                return res.send({
+                    status: 403,
+                    mesaage: "password not valid"
+                })
+            }
+        }
+        else {
+            return res.send({
+                status: 500,
+                err: Error,
+
+            })
+        }
+
+    }
+    catch (err) {
+        return res.send({
+            status: 403
+            ,
+            Error: err || "Internal Server Error"
+        })
+    }
 })
 router.put("/:id", async (req, res) => {
     try {
