@@ -1,6 +1,7 @@
 const exprees = require('express')
 const router = require('./Routes/user')
 const app = exprees()
+const cors = require("cors")
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb+srv://faiz:faiz@cluster0.enqka2g.mongodb.net/').then(()=>{
@@ -17,7 +18,7 @@ console.log("Middlewere console");
 next()
 }
 app.use(middelever)
-
+app.use(cors())
 
 app.get("/",(req ,res)=>{
     res.send({
