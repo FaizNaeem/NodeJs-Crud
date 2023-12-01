@@ -35,7 +35,6 @@ router.post("//", async (req, res) => {
         User:user
        
     })
-
 })
 router.get("//", async (req, res) => {
     const user = await signup.find()
