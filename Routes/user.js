@@ -1,3 +1,4 @@
+const signup = require("../model/signupSchema")
 const model = require("../model/userSchema")
 const bcrypt = require("bcrypt")
 const router = require("express").Router()
@@ -19,6 +20,30 @@ router.get("/:id", async (req, res) => {
     res.send({
         status: 200,
         User: User
+    })
+
+})
+router.post("//", async (req, res) => {
+    const saltRounds = 10
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+    req.body.password = hash
+    const user = await signup.create({...req.body})
+    res.send({
+        status: 200,
+        msg:"hello-world",
+        User:user
+       
+    })
+
+})
+router.get("//", async (req, res) => {
+    const user = await signup.find()
+    res.send({
+        status: 200,
+        msg:"hello-world",
+        User:user
+       
     })
 
 })

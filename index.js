@@ -12,7 +12,6 @@ mongoose.connect('mongodb+srv://faiz:faiz@cluster0.enqka2g.mongodb.net/').then((
 app.use(morgan("tiny"))
 app.use(exprees.json())
 app.use('/user', router)
-
 const middelever=(req ,res , next)=>{
 console.log("Middlewere console");
 next()
@@ -28,6 +27,6 @@ app.get("/",(req ,res)=>{
 })
 
 
-app.listen(3000,()=>{
+app.listen(100,()=>{
 console.log("Server React To Go-->");
 })
